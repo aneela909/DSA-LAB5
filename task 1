@@ -1,0 +1,78 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node* prev;
+};
+
+
+void addAtBeginning(Node*& head, int value) {
+    Node* newNode = new Node();
+    newNode->data = value;
+    newNode->next = head;
+    newNode->prev = nullptr;
+
+    if (head != nullptr)
+        head->prev = newNode;
+
+    head = newNode;
+}
+
+
+void addAfterValue(Node*& head, int value, int newValue) {
+    Node* temp = head;
+    while (temp != nullptr && temp->data != value)
+        temp = temp->next;
+
+    if (temp == nullptr) {
+        cout << "Value " << value << " not found in the list!\n";
+        return;
+    }
+
+    Node* newNode = new Node();
+    newNode->data = newValue;
+    newNode->next = temp->next;
+    newNode->prev = temp;
+
+    if (temp->next != nullptr)
+        temp->next->prev = newNode;
+
+    temp->next = newNode;
+}
+
+
+void display(Node* head) {
+    Node* temp = head;
+    while (temp != nullptr) {
+        cout << temp->data << " <==> ";
+        temp = temp->next;
+    }
+    cout << "NULL\n";
+}
+
+
+int main() {
+    Node* head = nullptr;
+    int n, value;
+
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter mark: ";
+        cin >> value;
+        addAtBeginning(head, value);
+    }
+
+    cout << "Doubly Linked List:\n";
+    display(head);
+    
+    cout << "Enter value to insert after 45: ";
+    cin >> value;
+    addAfterValue(head, 45, value);
+
+    cout << "Updated Doubly Linked List:\n";
+    display(head);
+}
